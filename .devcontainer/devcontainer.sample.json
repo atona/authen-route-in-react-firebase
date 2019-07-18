@@ -1,0 +1,9 @@
+{
+  "name": "React Redux Firebase Login",
+  "dockerFile": "Dockerfile",
+  "appPort": 3000,
+  "workspaceFolder": "/root",
+  "workspaceMount": "src=/Users/<YOUR_USER_NAME>,dst=/root,type=bind,consistency=cached",
+  "extensions": ["dbaeumer.vscode-eslint", "esbenp.prettier-vscode"],
+  "postCreateCommand": "yarn install"
+}
