@@ -1,17 +1,23 @@
-import React from "react";
-import { withRouter, Redirect } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Redirect } from "react-router-dom";
 import Todos from "../containers/Todos";
 
-const Profile = ({ user }) => {
-  const { uid } = user;
+export default ({ user, match }) => {
+  const { uid, emailVerified } = user;
 
-  return !uid ? (
+  const isVailed = () => {
+    return uid && uid === match.params.id ? true : false;
+  };
+
+  useEffect(() => {}, []);
+
+  return !isVailed() ? (
     <Redirect to="/signin" />
-  ) : (
+  ) : emailVerified ? (
     <>
       <Todos />
     </>
+  ) : (
+    <div>Not Verified Email</div>
   );
 };
-
-export default withRouter(Profile);

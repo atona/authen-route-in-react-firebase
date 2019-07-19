@@ -29,7 +29,7 @@ const Form = styled.form`
   }
 `;
 
-export default ({ user, signUp, signIn }) => {
+export default ({ user, signUp }) => {
   const { uid } = user;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -60,18 +60,14 @@ export default ({ user, signUp, signIn }) => {
         return;
       }
       setSubmitting(true);
-      signUp(email, password)
-        .catch(e => {
-          console.error(e.code, e.message);
-          setSubmitting(false);
-          setSubmitError(e);
-          setMessageOpen(true);
-        })
-        .then(() => {
-          signIn(email, password);
-        });
+      signUp(email, password).catch(e => {
+        console.error(e.code, e.message);
+        setSubmitting(false);
+        setSubmitError(e);
+        setMessageOpen(true);
+      });
     },
-    [email, password, passwordConfirm, errors, signUp, signIn]
+    [email, password, passwordConfirm, errors, signUp]
   );
 
   const handleClose = () => {

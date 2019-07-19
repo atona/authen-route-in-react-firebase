@@ -1,17 +1,17 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
 import { useSelector } from "react-redux";
-import SignUp from "../components/SignUp";
+import SignOut from "../components/SignOut";
 
 export default withRouter(props => {
   const user = useSelector(state => state.user);
-  const { signUp } = useSelector(state => state.authApi);
+  const { signOut } = useSelector(state => state.authApi);
 
   const _props = {
     user,
-    signUp,
+    signOut,
     ...props
   };
 
-  return <SignUp {..._props} />;
+  return <SignOut {..._props} />;
 });

@@ -6,6 +6,7 @@ const receiveData = data => ({
   payload: {
     uid: data.uid,
     email: data.email,
+    emailVerified: data.emailVerified,
     icon: data.icon,
     last_login: data.last_login,
     name: data.name
@@ -22,18 +23,40 @@ export const setUserAction = user => {
     };
   }
   return dispatch => {
-    fireStore
-      .collection("/users")
-      .doc(user.uid)
+    const userDoc = fireStore.collection("/users").doc(user.uid);
+    userDoc
       .get()
       .then(doc => {
         if (doc.exists) {
           // do something
           // doc.data() でデータを取得
-          dispatch(receiveData({ uid: user.uid, ...doc.data() }));
+          dispatch(
+            receiveData({
+              uid: user.uid,
+              emailVerified: user.emailVerified,
+              ...doc.data()
+            })
+          );
           dispatch(initializeAction());
         } else {
           console.log("No user");
+          userDoc
+            .set({
+              email: user.email,
+              icon: null,
+              last_login: null,
+              name: user.email
+            })
+            .then(() => {
+              dispatch(
+                receiveData({
+                  uid: user.uid,
+                  emailVerified: user.emailVerified,
+                  ...doc.data()
+                })
+              );
+              dispatch(initializeAction());
+            });
         }
       })
       .catch(error => {

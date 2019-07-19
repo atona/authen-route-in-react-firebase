@@ -1,7 +1,8 @@
 const initialState = {
   signUp: () => {},
+  signUpEmail: () => {},
   signIn: () => {},
-  signOut: () => {}
+  signOut: null
 };
 
 export default (state = initialState, action) => {

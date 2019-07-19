@@ -9,32 +9,79 @@ const AuthProvider = ({ children }) => {
 
   const signIn = useCallback(async (email, password) => {
     // setLoading(true)
-    return await fireAuth.signInWithEmailAndPassword(email, password);
+    return await fireAuth
+      .signInWithEmailAndPassword(email, password)
+      .then(response => {
+        const userDoc = fireStore.collection("users").doc(response.user.uid);
+        if (userDoc) {
+          userDoc.set({
+            email,
+            icon: null,
+            last_login: null,
+            name: email
+          });
+        }
+      });
   }, []);
 
   const signOut = useCallback(async () => {
     // try {
     // setLoading(true);
-    await fireAuth.signOut();
+    return await fireAuth.signOut();
     // } catch (e) {
     //   console.error(e.code, e.message);
     // }
   }, []);
 
   const signUp = useCallback(async (email, password) => {
+    const actionCodeSettings = {
+      // URL you want to redirect back to. The domain (www.example.com) for this
+      // URL must be whitelisted in the Firebase Console.
+      url: "http://localhost:3000/signout",
+      // This must be true.
+      handleCodeInApp: true
+    };
     // setLoading(true)
     return await fireAuth
       .createUserWithEmailAndPassword(email, password)
       .then(response => {
-        return fireStore
-          .collection("users")
-          .doc(response.user.uid)
-          .set({
-            email,
-            icon: null,
-            last_login: null,
-            name: email
+        return response.user
+          .sendEmailVerification(actionCodeSettings)
+          .then(() => {
+            window.localStorage.setItem("emailForSignIn", email);
+          })
+          .catch(e => {
+            console.log(e);
           });
+      });
+    // .then(response => {
+    //   return fireStore
+    //     .collection("users")
+    //     .doc(response.user.uid)
+    //     .set({
+    //       email,
+    //       icon: null,
+    //       last_login: null,
+    //       name: email
+    //     });
+    // });
+  }, []);
+
+  const signUpEmail = useCallback(async (email, password) => {
+    const actionCodeSettings = {
+      // URL you want to redirect back to. The domain (www.example.com) for this
+      // URL must be whitelisted in the Firebase Console.
+      url: "http://localhost:3000/finishSignUp?cartId=1234",
+      // This must be true.
+      handleCodeInApp: true
+    };
+    return await fireAuth
+      .sendSignInLinkToEmail(email, actionCodeSettings)
+      .then(() => {
+        window.localStorage.setItem("emailForSignIn", email);
+      })
+      .catch(e => {
+        console.log(e);
       });
   }, []);
 
@@ -42,16 +89,16 @@ const AuthProvider = ({ children }) => {
     dispatch(
       setAuthApiAction({
         signUp,
+        signUpEmail,
         signIn,
         signOut
       })
     );
     fireAuth.onAuthStateChanged(user => {
       // setLoading(false)
-      console.log(user);
       dispatch(setUserAction(user));
     });
-  }, [dispatch, signUp, signIn, signOut]);
+  }, [dispatch, signUp, signUpEmail, signIn, signOut]);
 
   return <>{children}</>;
 };

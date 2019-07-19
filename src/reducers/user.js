@@ -1,5 +1,6 @@
 const initialState = {
   uid: null,
+  emailVerified: false,
   email: null,
   icon: null,
   last_login: null,
