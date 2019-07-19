@@ -8,7 +8,6 @@ import AuthProvider from "../providers/AuthProvider";
 import SignIn from "../containers/SignIn";
 import SignUp from "../containers/SignUp";
 import SignOut from "../containers/SignOut";
-import FinishSignUp from "../components/FinishSignUp";
 import ProtectedRoute from "../Routers/PrivateRoute";
 import AppBar from "./AppBar";
 
@@ -43,7 +42,6 @@ const App = () => {
               <Route path="/signup" exact render={() => <SignUp />} />
               <Route path="/signout" render={() => <SignOut />} />
               <Route path="/public" exact render={() => <Public />} />
-              <Route path="/finishSignUp" render={() => <FinishSignUp />} />
               <ProtectedRoute path="/users/:id" render={() => <Profile />} />
             </Switch>
           </Wrapper>
