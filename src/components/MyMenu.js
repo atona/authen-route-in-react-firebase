@@ -122,7 +122,12 @@ const MyMenu = ({ initialize, user, signOut }) => {
         <>
           <Button color="inherit">
             <Link to="/signin" className={classes.link}>
-              Login
+              SignIn
+            </Link>
+          </Button>
+          <Button color="inherit">
+            <Link to="/signup" className={classes.link}>
+              SignUp
             </Link>
           </Button>
           <StyledMenu

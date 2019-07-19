@@ -6,6 +6,7 @@ import Public from "./Public";
 import Profile from "../containers/Profile";
 import AuthProvider from "../providers/AuthProvider";
 import SignIn from "../containers/SignIn";
+import SignUp from "../containers/SignUp";
 import ProtectedRoute from "../Routers/PrivateRoute";
 import AppBar from "./AppBar";
 
@@ -37,6 +38,7 @@ const App = () => {
             <Switch>
               <Route path="/" exact render={() => <Home />} />
               <Route path="/signin" exact render={() => <SignIn />} />
+              <Route path="/signup" exact render={() => <SignUp />} />
               <Route path="/public" exact render={() => <Public />} />
               <ProtectedRoute path="/users/:id" render={() => <Profile />} />
             </Switch>

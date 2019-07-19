@@ -1,4 +1,5 @@
 const initialState = {
+  signUp: () => {},
   signIn: () => {},
   signOut: () => {}
 };

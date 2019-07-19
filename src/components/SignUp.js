@@ -4,6 +4,7 @@ import styled from "styled-components";
 import MySnackBarContent from "./MySnackBarContent";
 import EmailForm from "./form/emailForm";
 import PasswordForm from "./form/passwordForm";
+import PasswordConfirmForm from "./form/passwordConfirmForm";
 
 import { Button, Typography, CircularProgress } from "@material-ui/core";
 
@@ -28,10 +29,11 @@ const Form = styled.form`
   }
 `;
 
-export default ({ user, signIn }) => {
+export default ({ user, signUp, signIn }) => {
   const { uid } = user;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordConfirm, setPasswordConfirm] = useState("");
   const [errors, setErrors] = useState({});
   const [submitError, setSubmitError] = useState({});
   const [submitting, setSubmitting] = useState(false);
@@ -47,19 +49,29 @@ export default ({ user, signIn }) => {
       if (password.length <= 0) {
         currentErrors = { ...currentErrors, password: "Required." };
       }
+      if (password !== passwordConfirm) {
+        currentErrors = {
+          ...currentErrors,
+          passwordConfirm: "Does not match the password."
+        };
+      }
       if (Object.keys(currentErrors).length > 0) {
         setErrors(currentErrors);
         return;
       }
       setSubmitting(true);
-      signIn(email, password).catch(e => {
-        console.error(e.code, e.message);
-        setSubmitting(false);
-        setSubmitError(e);
-        setMessageOpen(true);
-      });
+      signUp(email, password)
+        .catch(e => {
+          console.error(e.code, e.message);
+          setSubmitting(false);
+          setSubmitError(e);
+          setMessageOpen(true);
+        })
+        .then(() => {
+          signIn(email, password);
+        });
     },
-    [email, password, errors, signIn]
+    [email, password, passwordConfirm, errors, signUp, signIn]
   );
 
   const handleClose = () => {
@@ -71,7 +83,7 @@ export default ({ user, signIn }) => {
   ) : (
     <>
       <Typography variant="h4" style={{ marginBottom: 24 }}>
-        SignIn
+        SignUp
       </Typography>
       <Contents>
         <Form onSubmit={onSubmit}>
@@ -86,6 +98,14 @@ export default ({ user, signIn }) => {
           )}
           <EmailForm {...{ email, setEmail, errors, setErrors }} />
           <PasswordForm {...{ password, setPassword, errors, setErrors }} />
+          <PasswordConfirmForm
+            {...{
+              passwordConfirm,
+              setPasswordConfirm,
+              errors,
+              setErrors
+            }}
+          />
           <Button
             type={"submit"}
             fullWidth
@@ -94,7 +114,6 @@ export default ({ user, signIn }) => {
             disabled={Object.keys(errors).length > 0}
             // onClick={onSubmit}
           >
-            {/* {mode === modes.signin ? "Sign In" : "Sign Up"} */}
             {submitting ? (
               <CircularProgress
                 style={{ color: "#fff" }}
