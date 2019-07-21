@@ -1,0 +1,9 @@
+export const SIGN_IN = "SIGN_IN";
+export const SIGN_OUT = "SIGN_OUT";
+export const INITIALIZE = "INITIALIZE";
+export const SET_AUTH_API = "SET_AUTH_API";
+export const SET_USER = "SET_USER";
+export const REMOVE_USER = "REMOVE_USER";
+export const SET_USER_TODOS = "SET_USER_TODOS";
+export const REMOVE_USER_TODOS = "REMOVE_USER_TODOS";
+export const SET_TODOS_API = "SET_TODOS_API";

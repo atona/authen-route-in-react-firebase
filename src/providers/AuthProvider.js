@@ -2,26 +2,14 @@ import React, { useEffect, useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { setUserAction } from "../actions/user";
 import { setAuthApiAction } from "../actions/authApi";
-import { fireAuth, fireStore } from "../fireApi";
+import { fireAuth } from "../fireApi";
 
 const AuthProvider = ({ children }) => {
   const dispatch = useDispatch();
 
   const signIn = useCallback(async (email, password) => {
     // setLoading(true)
-    return await fireAuth
-      .signInWithEmailAndPassword(email, password)
-      .then(response => {
-        const userDoc = fireStore.collection("users").doc(response.user.uid);
-        if (userDoc) {
-          userDoc.set({
-            email,
-            icon: null,
-            last_login: null,
-            name: email
-          });
-        }
-      });
+    return await fireAuth.signInWithEmailAndPassword(email, password);
   }, []);
 
   const signOut = useCallback(async () => {
@@ -37,7 +25,7 @@ const AuthProvider = ({ children }) => {
     const actionCodeSettings = {
       // URL you want to redirect back to. The domain (www.example.com) for this
       // URL must be whitelisted in the Firebase Console.
-      url: "http://localhost:3000/signout",
+      url: `http://${process.env.REACT_APP_DOMAIN}/signout`,
       // This must be true.
       handleCodeInApp: true
     };

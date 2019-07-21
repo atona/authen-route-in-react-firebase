@@ -1,17 +1,19 @@
 import { fireStore } from "../fireApi";
 import { initializeAction } from "./initialize";
 
-const receiveData = data => ({
-  type: "SET_USER",
-  payload: {
-    uid: data.uid,
-    email: data.email,
-    emailVerified: data.emailVerified,
-    icon: data.icon,
-    last_login: data.last_login,
-    name: data.name
-  }
-});
+const receiveData = data => {
+  return {
+    type: "SET_USER",
+    payload: {
+      uid: data.uid,
+      email: data.email,
+      emailVerified: data.emailVerified,
+      icon: data.icon,
+      last_login: data.last_login,
+      name: data.name
+    }
+  };
+};
 const removeData = () => ({
   type: "REMOVE_USER"
 });
@@ -39,7 +41,6 @@ export const setUserAction = user => {
           );
           dispatch(initializeAction());
         } else {
-          console.log("No user");
           userDoc
             .set({
               email: user.email,
