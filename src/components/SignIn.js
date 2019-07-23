@@ -14,8 +14,16 @@ const Contents = styled.div`
     border-radius: 10px;
     box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
     margin: 10% auto 0;
+    padding: 40px 0 0;
     display: flex;
     flex-direction: column;
+    text-align: center;
+  }
+`;
+
+const PageTitle = styled.div`
+  & {
+    padding: 15px 10%;
   }
 `;
 
@@ -70,10 +78,10 @@ export default ({ user, signIn }) => {
     <Redirect to={`/users/${uid}`} />
   ) : (
     <>
-      <Typography variant="h4" style={{ marginBottom: 24 }}>
-        SignIn
-      </Typography>
       <Contents>
+        <PageTitle>
+          <Typography variant="h2">SignIn</Typography>
+        </PageTitle>
         <Form onSubmit={onSubmit}>
           {submitError.message && messageOpen ? (
             <MySnackBarContent

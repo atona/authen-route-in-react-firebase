@@ -13,12 +13,8 @@ const AuthProvider = ({ children }) => {
   }, []);
 
   const signOut = useCallback(async () => {
-    // try {
     // setLoading(true);
     return await fireAuth.signOut();
-    // } catch (e) {
-    //   console.error(e.code, e.message);
-    // }
   }, []);
 
   const signUp = useCallback(async (email, password) => {
@@ -42,17 +38,6 @@ const AuthProvider = ({ children }) => {
             console.log(e);
           });
       });
-    // .then(response => {
-    //   return fireStore
-    //     .collection("users")
-    //     .doc(response.user.uid)
-    //     .set({
-    //       email,
-    //       icon: null,
-    //       last_login: null,
-    //       name: email
-    //     });
-    // });
   }, []);
 
   const signUpEmail = useCallback(async (email, password) => {
