@@ -1,6 +1,8 @@
+import { INITIALIZE } from "./ActionTypes";
+
 export const initializeAction = () => {
   return {
-    type: "INITIALIZE",
+    type: INITIALIZE,
     payload: true
   };
 };

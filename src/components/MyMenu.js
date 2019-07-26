@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
@@ -64,6 +64,7 @@ const MyMenu = ({ initialize, user, signOut }) => {
   const { uid, name, icon } = user;
 
   const [anchorEl, setAnchorEl] = useState(null);
+  const [avator, setAvator] = useState(null);
 
   const handleClick = event => {
     setAnchorEl(event.currentTarget);
@@ -81,6 +82,14 @@ const MyMenu = ({ initialize, user, signOut }) => {
     }
   };
 
+  useEffect(() => {
+    setAvator(
+      icon
+        ? icon
+        : "https://abs.twimg.com/sticky/default_profile_images/default_profile_400x400.png"
+    );
+  }, [icon]);
+
   return (
     <>
       {!initialize ? (
@@ -94,7 +103,7 @@ const MyMenu = ({ initialize, user, signOut }) => {
             color="primary"
             onClick={handleClick}
             alt={name}
-            src={icon}
+            src={avator}
           />
           <StyledMenu
             id="customized-menu"
@@ -105,7 +114,7 @@ const MyMenu = ({ initialize, user, signOut }) => {
           >
             <StyledMenuItem>
               <ListItemIcon>
-                <Avatar alt={name} src={icon} />
+                <Avatar alt={name} src={avator} />
               </ListItemIcon>
               <ListItemText primary={name} />
             </StyledMenuItem>
