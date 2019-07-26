@@ -1,25 +1,13 @@
 import React, { useState, useCallback } from "react";
 import { Redirect } from "react-router-dom";
-import styled from "styled-components";
+import styled, { ThemeProvider } from "styled-components";
 import MySnackBarContent from "./MySnackBarContent";
 import EmailForm from "./form/emailForm";
 import PasswordForm from "./form/passwordForm";
 
 import { Button, Typography, CircularProgress } from "@material-ui/core";
 
-const Contents = styled.div`
-  & {
-    width: 50%;
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
-    margin: 10% auto 0;
-    padding: 40px 0 0;
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-  }
-`;
+import Contents from "../components/Contents";
 
 const PageTitle = styled.div`
   & {
@@ -78,43 +66,45 @@ export default ({ user, signIn }) => {
     <Redirect to={`/users/${uid}`} />
   ) : (
     <>
-      <Contents>
-        <PageTitle>
-          <Typography variant="h2">SignIn</Typography>
-        </PageTitle>
-        <Form onSubmit={onSubmit}>
-          {submitError.message && messageOpen ? (
-            <MySnackBarContent
-              onClose={handleClose}
-              variant="error"
-              message={submitError.message}
-            />
-          ) : (
-            ""
-          )}
-          <EmailForm {...{ email, setEmail, errors, setErrors }} />
-          <PasswordForm {...{ password, setPassword, errors, setErrors }} />
-          <Button
-            type={"submit"}
-            fullWidth
-            variant={"contained"}
-            color={"primary"}
-            disabled={Object.keys(errors).length > 0}
-            // onClick={onSubmit}
-          >
-            {/* {mode === modes.signin ? "Sign In" : "Sign Up"} */}
-            {submitting ? (
-              <CircularProgress
-                style={{ color: "#fff" }}
-                color={"inherit"}
-                size={16}
+      <ThemeProvider theme={{ size: "small" }}>
+        <Contents>
+          <PageTitle>
+            <Typography variant="h2">SignIn</Typography>
+          </PageTitle>
+          <Form onSubmit={onSubmit}>
+            {submitError.message && messageOpen ? (
+              <MySnackBarContent
+                onClose={handleClose}
+                variant="error"
+                message={submitError.message}
               />
             ) : (
-              "Submit"
+              ""
             )}
-          </Button>
-        </Form>
-      </Contents>
+            <EmailForm {...{ email, setEmail, errors, setErrors }} />
+            <PasswordForm {...{ password, setPassword, errors, setErrors }} />
+            <Button
+              type={"submit"}
+              fullWidth
+              variant={"contained"}
+              color={"primary"}
+              disabled={Object.keys(errors).length > 0}
+              // onClick={onSubmit}
+            >
+              {/* {mode === modes.signin ? "Sign In" : "Sign Up"} */}
+              {submitting ? (
+                <CircularProgress
+                  style={{ color: "#fff" }}
+                  color={"inherit"}
+                  size={16}
+                />
+              ) : (
+                "Submit"
+              )}
+            </Button>
+          </Form>
+        </Contents>
+      </ThemeProvider>
     </>
   );
 };

@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { Redirect } from "react-router-dom";
 import Todos from "../containers/Todos";
+import Contents from "../components/Contents";
 
 export default ({ user, match }) => {
   const { uid, emailVerified } = user;
@@ -15,9 +16,15 @@ export default ({ user, match }) => {
     <Redirect to="/signin" />
   ) : emailVerified ? (
     <>
-      <Todos />
+      <Contents>
+        <Todos />
+      </Contents>
     </>
   ) : (
-    <div>Not Verified Email</div>
+    <>
+      <Contents>
+        <div>Not Verified Email</div>
+      </Contents>
+    </>
   );
 };
