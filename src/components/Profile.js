@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { Redirect } from "react-router-dom";
 import Todos from "../containers/Todos";
+import EmailVerifier from "../containers/EmailVerifier";
 import Contents from "../components/Contents";
 
 export default ({ user, match }) => {
@@ -23,7 +24,7 @@ export default ({ user, match }) => {
   ) : (
     <>
       <Contents>
-        <div>Not Verified Email</div>
+        <EmailVerifier />
       </Contents>
     </>
   );

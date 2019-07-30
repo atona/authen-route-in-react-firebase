@@ -7,7 +7,8 @@ type initialState = AuthApi;
 const initialState = {
   signUp: null,
   signIn: null,
-  signOut: null
+  signOut: null,
+  sendEmailVerification: null
 };
 
 export default (

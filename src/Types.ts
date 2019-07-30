@@ -24,6 +24,7 @@ export type AuthApi = {
   signUp: Promise<void> | null;
   signIn: Promise<void> | null;
   signOut: Promise<void> | null;
+  sendEmailVerification: Promise<void> | null;
 };
 
 export type TodosApi = {
