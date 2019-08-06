@@ -6,11 +6,13 @@ import userTodos from "./userTodos";
 import todosApi from "./todosApi";
 import authApi from "./authApi";
 
-export default combineReducers({
+export const reducers = {
   auth,
   initialize,
   user,
   userTodos,
   todosApi,
   authApi
-});
+};
+
+export default combineReducers(reducers);
