@@ -4,14 +4,15 @@ import { initializeAction } from "./initialize";
 
 import { User } from "../Types";
 import { SET_USER, REMOVE_USER } from "../actions/ActionTypes";
+import { SetUserAction, RemoveUserAction } from "./ActionCreatorTypes";
 
-const receiveData = (data: User) => {
+const receiveData = (data: User): SetUserAction => {
   return {
     type: SET_USER,
     payload: data
   };
 };
-const removeData = () => ({
+const removeData = (): RemoveUserAction => ({
   type: REMOVE_USER
 });
 export const setUserAction = (user: firebase.User) => {
