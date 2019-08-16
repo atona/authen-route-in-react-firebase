@@ -1,6 +1,11 @@
 import React, { useState, useCallback } from "react";
 import styled from "styled-components";
-import { TextField, Button } from "@material-ui/core";
+import {
+  TextField,
+  Button,
+  FormHelperText,
+  FormControl
+} from "@material-ui/core";
 
 const Contents = styled.div`
   & {
@@ -9,7 +14,11 @@ const Contents = styled.div`
     display: flex;
   }
 `;
-
+const InputMessage = styled(FormHelperText)`
+  && {
+    margin: 5px;
+  }
+`;
 const Input = styled(TextField)`
   && {
     margin: 5px;
@@ -29,25 +38,57 @@ const AddButton = styled(Button)`
 
 export default ({ todosApi }) => {
   const [input, setInput] = useState("");
+  const [errors, setErrors] = useState({});
+
+  const onChangeInput = useCallback(
+    e => {
+      if (e.target.value.length <= 0) {
+        setErrors({ ...errors, input: "Empty." });
+      } else {
+        delete errors.input;
+        setErrors(errors);
+      }
+      setInput(e.target.value);
+    },
+    [errors, setInput, setErrors]
+  );
 
   const addTodo = useCallback(() => {
+    let currentErrors = errors;
+    if (input.length <= 0) {
+      currentErrors = { ...currentErrors, input: "Empty." };
+    }
+    if (Object.keys(currentErrors).length > 0) {
+      setErrors(currentErrors);
+      return;
+    }
     todosApi.add(input);
     setInput("");
-  }, [input, todosApi]);
+  }, [input, todosApi, errors]);
 
   return (
-    <Contents>
-      <Input
-        id="add-todo"
-        label="Todo Name"
-        placeholder="Enter new todo"
-        value={input}
-        onChange={e => setInput(e.target.value)}
-        fullWidth
-      />
-      <AddButton color="primary" onClick={addTodo}>
-        Add
-      </AddButton>
-    </Contents>
+    <>
+      <FormControl
+        error={"input" in errors && errors.input.length > 0}
+        aria-describedby="input-error"
+      >
+        <Contents>
+          <Input
+            id="add-todo"
+            label="Todo Name"
+            placeholder="Enter new todo"
+            value={input}
+            onChange={onChangeInput}
+            fullWidth
+          />
+          <AddButton color="primary" onClick={addTodo}>
+            Add
+          </AddButton>
+        </Contents>
+        <Contents>
+          <InputMessage id="input-error">{errors.input}</InputMessage>
+        </Contents>
+      </FormControl>
+    </>
   );
 };
