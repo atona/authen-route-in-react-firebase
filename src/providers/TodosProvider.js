@@ -12,7 +12,7 @@ const TodosProvider = ({ children }) => {
   const collection = useMemo(() => {
     const col = fireStore.doc(`users/${uid}`).collection("todos");
 
-    col.onSnapshot(query => {
+    col.orderBy("createdAt", "desc").onSnapshot(query => {
       const datas = [];
       query.forEach(d => datas.push({ ...d.data(), docId: d.id }));
       dispatch(setUserTodos(datas));
