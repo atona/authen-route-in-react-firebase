@@ -39,18 +39,24 @@ const AddButton = styled(Button)`
 export default ({ todosApi }) => {
   const [input, setInput] = useState("");
   const [errors, setErrors] = useState({});
+  const [settings] = useState({
+    maxlength: 70
+  });
 
   const onChangeInput = useCallback(
     e => {
+      const { maxlength } = settings;
       if (e.target.value.length <= 0) {
         setErrors({ ...errors, input: "Empty." });
+      } else if (e.target.value.length > maxlength) {
+        setErrors({ ...errors, input: "Too Long." });
       } else {
         delete errors.input;
         setErrors(errors);
       }
       setInput(e.target.value);
     },
-    [errors, setInput, setErrors]
+    [errors, setInput, setErrors, settings]
   );
 
   const addTodo = useCallback(() => {
@@ -77,6 +83,7 @@ export default ({ todosApi }) => {
             id="add-todo"
             label="Todo Name"
             placeholder="Enter new todo"
+            maxLength={settings.maxlength}
             value={input}
             onChange={onChangeInput}
             fullWidth
